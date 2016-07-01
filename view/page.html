@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>{{title}} - MegaNews Online</title>
+    <meta content="text/html; charset=utf-8">
+</head>
+<body>
+<h1 align="center">MegaNews Online</h1>
+
+<h4><a href="/">Home</a> / <a href="/page.php">All news</a></h4>
+
+
+{% for categoryKey, item in page %}
+    <h3><a href="/page.php?id={{menu[categoryKey].id}}">{{menu[categoryKey].name}}</a></h3>
+    {% for key, items in item %}
+
+        <h3><a href="news.php?id={{ items.id }}">{{ items.title }}</a></h3>
+        <small><i>Published by {{ items.author }} on {{ items.date }}</i></small>
+        <p style="align:middle">{{ items.body }}</p>
+
+    {% endfor %}
+{% endfor %}
+
+<h2><a href="/page.php" style="color: black">&#8592 Go back to all news list</a></h2>
+
+
+</body>
+</html>
