@@ -6,6 +6,8 @@
  * Date: 27.06.2016
  * Time: 23:00
  */
+include_once("./config.php");
+
 class DataBase
 {
     private $connect;
@@ -14,7 +16,16 @@ class DataBase
     private $user;
     private $pass;
 
-    public function __construct($host, $user, $pass, $dbName)
+    private static $instance = null;
+
+    public static function getInstance() {
+        if (self::$instance == null) {
+            self::$instance = new DataBase(HOST, USER, PASS, DB_NAME);
+        }
+        return self::$instance;
+    }
+
+    private function __construct($host, $user, $pass, $dbName)
     {
         $this->host = $host;
         $this->user = $user;

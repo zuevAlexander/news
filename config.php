@@ -9,4 +9,4 @@
 const DB_NAME = 'newsprojectdb';
 const HOST = "localhost";
 const USER = "root";
-const PASS = "1234";
+const PASS = "";

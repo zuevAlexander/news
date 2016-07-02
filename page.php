@@ -7,8 +7,9 @@
  * Time: 22:42
  */
 include_once("config.php");
-include_once("DataBase.php");
+include_once("lib/DataBase.php");
 include_once("vendors/Twig/Autoloader.php");
+include_once("model/menu.php");
 
 class NewsPage
 {
@@ -19,13 +20,15 @@ class NewsPage
 
     public function __construct()
     {
-        $this->db = new DataBase(HOST, USER, PASS, DB_NAME);
+        $this->db = DataBase::getInstance();
     }
 
     private function getMenu($idMenu)
     {
-        $query = "SELECT * FROM `menu` where id='$idMenu'";
-        return $this->db->getResult($query);
+//        $query = "SELECT * FROM `menu` where id='$idMenu'";
+//        return $this->db->getResult($query);
+        $menu = new Menu();
+        return $menu->get($idMenu);
     }
 
     private function getNewsForPage()
