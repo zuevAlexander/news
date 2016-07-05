@@ -6,7 +6,7 @@
  * Time: 23:04
  */
 
-const DB_NAME = 'newsprojectdb';
+const DB_NAME = "newsprojectdb";
 const HOST = "localhost";
 const USER = "root";
 const PASS = "";

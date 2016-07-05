@@ -11,4 +11,4 @@ include_once("model/post.php");
 $a = new Post();
 $b = 2;
 $c= $a->getAll();
-var_dump($c);
+var_dump($c); 

@@ -6,9 +6,9 @@
  * Date: 26.06.2016
  * Time: 19:00
  */
-include_once("config.php");
-include_once("DataBase.php");
 include_once("vendors/Twig/Autoloader.php");
+include_once ("model/post.php");
+include_once ("model/menu.php");
 
 class News
 {
@@ -16,22 +16,20 @@ class News
 
     public function __construct()
     {
-        $this->db = new DataBase(HOST, USER, PASS, DB_NAME); //composition
+        $this->db = DataBase::getInstance(); //composition
     }
 
     private function getMenu($idMenu)
     {
-        $query = "SELECT * FROM `menu` where id='$idMenu'";
-        $result = $this->db->getResult($query);
-        return $result;
+        $menu = new Menu();
+        return $menu->getById($idMenu);
     }
 
     private function getNewsForNews()
     {
+        $post = new Post();
         $id = (int)$_GET["id"];
-        $query = "SELECT * FROM `news` where id = $id";
-        $result = $this->db->getResult($query);
-        return $result;
+        return $post->getById($id);
     }
 
     public function render()
@@ -50,14 +48,15 @@ class News
             // передаём в шаблон переменные и значения
             // выводим сформированное содержание
             $news = $this->getNewsForNews();
-            $theme = $this->getMenu($news['theme']);
+            $theme = $this->getMenu($news->getTheme());
             echo $template->render(array(
-                'id' => $news['theme'],
+/*                '$news' => $news['theme'],
                 'title' => $news['title'],
                 'body' => $news['body'],
                 'author' => $news['author'],
-                'date' => $news['date'],
-                'theme' => $theme['name']
+                'date' => $news['date']*/
+                'news' => $news,
+                'theme' => $theme
             ));
 
         } catch (Exception $e) {
@@ -68,3 +67,4 @@ class News
 
 $news = new News();
 $news->render();
+
