@@ -6,19 +6,12 @@
  * Date: 26.06.2016
  * Time: 19:00
  */
-include_once("vendors/Twig/Autoloader.php");
+require_once ("vendor/autoload.php");
 include_once ("model/post.php");
 include_once ("model/menu.php");
 
 class News
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = DataBase::getInstance(); //composition
-    }
-
     private function getMenu($idMenu)
     {
         $menu = new Menu();
@@ -34,27 +27,16 @@ class News
 
     public function render()
     {
-        Twig_Autoloader::register();
         try {
-            // указывае где хранятся шаблоны
             $loader = new Twig_Loader_Filesystem('view');
+            $twig = new Twig_Environment($loader, array(
+                'cache' => 'cache',
+            ));
 
-            // инициализируем Twig
-            $twig = new Twig_Environment($loader);
-
-            // подгружаем шаблон
-            $template = $twig->loadTemplate('news.html');
-
-            // передаём в шаблон переменные и значения
-            // выводим сформированное содержание
             $news = $this->getNewsForNews();
             $theme = $this->getMenu($news->getTheme());
-            echo $template->render(array(
-/*                '$news' => $news['theme'],
-                'title' => $news['title'],
-                'body' => $news['body'],
-                'author' => $news['author'],
-                'date' => $news['date']*/
+
+            echo $twig->render('news.html', array(
                 'news' => $news,
                 'theme' => $theme
             ));

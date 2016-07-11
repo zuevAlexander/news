@@ -10,6 +10,11 @@ include_once ("./lib/DataBase.php");
 
 class Post
 {
+    const BUSINESS = 1;
+    const IT = 2;
+    const SPORT = 3;
+    private $db;
+
     private $id;
     private $date;
     private $title;
@@ -17,11 +22,7 @@ class Post
     private $uri;
     private $theme;
     private $author;
-    private $db;
-    const BUSINESS = 1;
-    const IT = 2;
-    const SPORT = 3;
-    
+
     public function __construct()
     {
         $this->db = DataBase::getInstance();
@@ -30,13 +31,13 @@ class Post
     private function fillPost($row)
     {
         $post = new Post();
-        $post->setId($row['id']);
-        $post->setDate($row['date']);
-        $post->setTitle($row['title']);
-        $post->setBody($row['body']);
-        $post->setUri($row['uri']);
-        $post->setTheme($row['theme']);
-        $post->setAuthor($row['author']);
+        $post->id = $row['id'];
+        $post->date = $row['date'];
+        $post->title = $row['title'];
+        $post->body = $row['body'];
+        $post->uri = $row['uri'];
+        $post->theme = $row['theme'];
+        $post->author = $row['author'];
         return $post;
     }
 
@@ -48,37 +49,17 @@ class Post
         $post = $this->fillPost($row);
         return $post;
     }
-    
+
     public function getByTheme()
     {
-        if ($id = (int)$_GET['id']) {
-            $query = "SELECT * FROM `news` where theme=$id";
-        } 
-        else {
-            $query = "SELECT * FROM `news` where 1 limit 10";
-        }
-        
-        $perform = mysql_query($query);
+        $query = mysql_query("select * from news where 1");
         $post = array();
-        
-        while ($row = mysql_fetch_assoc($perform)) {
-            switch ($row['theme']) {
-                case self::BUSINESS:
-                    $post[self::BUSINESS][] = $row;
-                    break;
-                case self::SPORT:
-                    $post[self::SPORT][] = $row;
-                    break;
-                case self::IT:
-                    $post[self::IT][] = $row;
-                    break;
-                default:
-                    echo 'error';
-            }
+        while ($row = mysql_fetch_assoc($query)) {
+            $post[] = $this->fillPost($row);
         }
         return $post;
     }
-    
+
     public function getAll()
     {
         $query = mysql_query("select * from news where 1");
@@ -105,117 +86,50 @@ class Post
         $request = mysql_query("delete from news where id = $this->id");
         return $request;
     }
-    /**
-     * @return mixed
-     */
+
+    public function __get($name)
+    {
+        return $this->$name;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->$name = $value;
+    }
+
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getDate()
     {
         return $this->date;
     }
 
-    /**
-     * @param mixed $date
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getBody()
     {
         return $this->body;
     }
 
-    /**
-     * @param mixed $body
-     */
-    public function setBody($body)
-    {
-        $this->body = $body;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getUri()
     {
         return $this->uri;
     }
 
-    /**
-     * @param mixed $uri
-     */
-    public function setUri($uri)
-    {
-        $this->uri = $uri;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getTheme()
     {
         return $this->theme;
     }
 
-    /**
-     * @param mixed $theme
-     */
-    public function setTheme($theme)
-    {
-        $this->theme = $theme;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getAuthor()
     {
         return $this->author;
     }
-
-    /**
-     * @param mixed $author
-     */
-    public function setAuthor($author)
-    {
-        $this->author = $author;
-    }
-
 
 }

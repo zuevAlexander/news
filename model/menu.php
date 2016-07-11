@@ -12,10 +12,11 @@ include_once ("./lib/DataBase.php");
 class Menu
 {
 
+    private $db;
+    
     private $id;
     private $name;
     private $uri;
-    private $db;
 
     public function __construct()
     {
@@ -34,9 +35,9 @@ class Menu
 
     private function fillMenu($row) {
         $menu = new Menu();
-        $menu->setId($row['id']);
-        $menu->setName($row['name']);
-        $menu->setUri($row['uri']);
+        $menu->id = $row['id'];
+        $menu->name = $row['name'];
+        $menu->uri = $row['uri'];
 
         return $menu;
     }
@@ -69,36 +70,24 @@ class Menu
         $query = "delete from menu where id = $this->id";
         return mysql_query($query);
     }
+    
+    public function __set($fieldName, $value) {
+        $this->$fieldName = $value;
+    }
+    
+    public function getName()
+    {
+        return $this->name;
+    }
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
     public function getUri()
     {
         return $this->uri;
     }
-
-    public function setUri($uri)
-    {
-        $this->uri = $uri;
-    }
-
 
 }
