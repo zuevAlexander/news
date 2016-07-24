@@ -7,7 +7,7 @@ class NewsController
     {
         $this->index();
     }
-
+ 
     public function index()
     {
         echo __CLASS__;
