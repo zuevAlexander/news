@@ -58,11 +58,7 @@ class PageController extends Controller
         $list = $this->groupByTheme($rows);
         return $list;
     }
-
-    /**
-     * @param $rows
-     * @return array
-     */
+    
     private function groupByTheme($rows)
     {
         $list = array();

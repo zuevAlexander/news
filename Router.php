@@ -1,7 +1,7 @@
 <?php
 
-include_once("controller/NewsController.php");
-include_once("controller/PageController.php");
+include_once('controller/NewsController.php');
+include_once('controller/PageController.php');
 
 class Router
 {
@@ -65,16 +65,13 @@ class Router
         $controllerInstance = new $controllerName();
 
 
-        $action = isset($controllerArrayName[1]) ? $controllerArrayName[1] : "index"; 
+
+        $action = isset($controllerArrayName[1]) ? $controllerArrayName[1] : "index";
         call_user_func_array(array($controllerInstance, $action), $routeValues);
-
-
-        //TODO: fix side effect with not equal route
-
 
     }
 
-    private function __construct()
+    public function __construct()
     {
         $this->config = $this->routeConfig();
     }
@@ -108,3 +105,6 @@ class Router
         );
     }
 }
+
+$route = new Router();
+$route->route($_GET);
